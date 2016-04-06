@@ -1,0 +1,146 @@
+<html>
+
+<head>
+
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">
+</script>
+
+<!-- Original code retrieved from http://jsfiddle.net/vlad_bezden/RU8Jq/ -->
+<script>
+$(document).ready(function(){
+  function getData() {
+      var url = "http://query.yahooapis.com/v1/public/yql";
+      var symbol = $("#symbol").val();
+      var data = encodeURIComponent("select * from yahoo.finance.quotes where symbol in ('spy')");
+
+      $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
+          .done(function (data) {
+          $("#Ask").text("Ask: " + data.query.results.quote.Ask);
+          $("#pc").text("pc: " + data.query.results.quote.PercentChange);
+          $("#LastTrade").text("Last Trade: " + data.query.results.quote.LastTradePriceOnly);
+          $("#result").text("Average Daily Volume: " + data.query.results.quote.AverageDailyVolume);
+      })
+          .fail(function (jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+              $("#result").text('Request failed: ' + err);
+      });
+  }
+  getData();
+  setInterval(getData, 1 * 1e3);
+});
+</script>
+
+<body>
+
+  <div id='Ask'>Ask</div>
+  <div id='pc'>Percent Change</div>
+  <div id='LastTrade'>Last Trade</div>
+  <div id='result'>No Price</div>
+
+</body>
+</html>
+
+
+<!--
+Reference:
+http://jsfiddle.net/b9z55/16/
+
+???
+http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20%3D%20%27GOOG%27&format=json&diagnostics=true&env=store://datatables.org/alltableswithkeys&callback=?
+
+
+symbol: GOOG
+Ask: 752.49
+AverageDailyVolume: 2487580
+Bid: 749.55
+AskRealtime: null
+BidRealtime: null
+BookValue: 175.07
+Change_PercentChange: +4.96 - +0.67%
+Change: +4.96
+Commission: null
+Currency: USD
+ChangeRealtime: null
+AfterHoursChangeRealtime: null
+DividendShare: null
+LastTradeDate: 4/1/2016
+TradeDate: null
+EarningsShare: 23.59
+ErrorIndicationreturnedforsymbolchangedinvalid: null
+EPSEstimateCurrentYear: 34.62
+EPSEstimateNextYear: 40.32
+EPSEstimateNextQuarter: 8.19
+DaysLow: 737.00
+DaysHigh: 750.34
+YearLow: 515.18
+YearHigh: 789.87
+HoldingsGainPercent: null
+AnnualizedGain: null
+HoldingsGain: null
+HoldingsGainPercentRealtime: null
+HoldingsGainRealtime: null
+MoreInfo: null
+OrderBookRealtime: null
+MarketCapitalization: 516.18B
+MarketCapRealtime: null
+EBITDA: 24.42B
+ChangeFromYearLow: 234.73
+PercentChangeFromYearLow: +45.56%
+LastTradeRealtimeWithTime: null
+ChangePercentRealtime: null
+ChangeFromYearHigh: -39.96
+PercebtChangeFromYearHigh: -5.06%
+LastTradeWithTime: 4:00pm - 749.91
+LastTradePriceOnly: 749.91
+HighLimit: null
+LowLimit: null
+DaysRange: 737.00 - 750.34
+DaysRangeRealtime: null
+FiftydayMovingAverage: 718.70
+TwoHundreddayMovingAverage: 708.95
+ChangeFromTwoHundreddayMovingAverage: 40.96
+PercentChangeFromTwoHundreddayMovingAverage: +5.78%
+ChangeFromFiftydayMovingAverage: 31.21
+PercentChangeFromFiftydayMovingAverage: +4.34%
+Name: Alphabet Inc.
+Notes: null
+Open: 738.91
+PreviousClose: 744.95
+PricePaid: null
+ChangeinPercent: +0.67%
+PriceSales: 6.84
+PriceBook: 4.26
+ExDividendDate: null
+PERatio: 31.79
+DividendPayDate: null
+PERatioRealtime: null
+PEGRatio: 1.29
+PriceEPSEstimateCurrentYear: 21.66
+PriceEPSEstimateNextYear: 18.60
+Symbol: GOOG
+SharesOwned: null
+ShortRatio: 1.32
+LastTradeTime: 4:00pm
+TickerTrend: null
+OneyrTargetPrice: 930.08
+Volume: 1576745
+HoldingsValue: null
+HoldingsValueRealtime: null
+YearRange: 515.18 - 789.87
+DaysValueChange: null
+DaysValueChangeRealtime: null
+StockExchange: NMS
+DividendYield: null
+PercentChange: +0.67%
+-->
+
+
+
+
+
+
+
+
+
+<!-- -->

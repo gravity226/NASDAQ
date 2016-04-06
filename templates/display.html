@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="html/d3.layout.cloud.js"></script>
+<script src="https://gist.github.com/emeeks/3361332/raw/61cf57523fe8cf314333e5f60cc266351fec2017/d3.layout.cloud.js"></script>
+<head>
+    <title>Word Cloud Example</title>
+</head>
+
+<body>
+
+  <div align="center">
+    <h2>{{ com_name }}</h2>
+
+    <div>
+      {% include link_to_table %}
+    </div>
+    <p>Data Scraped From: <i>{{ historical_url }}</i></p>
+
+    <br>
+    <h2>Tweeter <i>BUZZ</i> Words</h2>
+    <div class="word_cloud">
+      <script>
+      var fill = d3.scale.category20();
+
+      d3.layout.cloud().size([500, 300])
+          .words({{ d3_data|tojson|safe }})
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })
+          .font("Impact")
+          .fontSize(function(d) { return d.size; })
+          .on("end", draw)
+          .start();
+
+      function draw(words) {
+        d3.select("body").append("svg")
+              .attr("width", 1000)
+              .attr("height", 300)
+            .append("g")
+              .attr("transform", "translate(150,150)")
+            .selectAll("text")
+              .data(words)
+            .enter().append("text")
+              .style("font-size", function(d) { return d.size + "px"; })
+              .style("font-family", "Impact")
+              .style("fill", function(d, i) { return fill(i); })
+              .attr("text-anchor", "middle")
+              .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+              })
+              .text(function(d) { return d.text; });
+        }
+      </script>
+    </div>
+  </div>
+</body>
+
+
+</html>
