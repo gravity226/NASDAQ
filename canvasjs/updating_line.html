@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type = "text/javascript" >
+$(document).ready(function(){
+  var ask;
+  function getData() {
+      var url = "http://query.yahooapis.com/v1/public/yql";
+      var symbol = $("#symbol").val();
+      var data = encodeURIComponent("select * from yahoo.finance.quotes where symbol in ('spy')");
+
+      $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
+          .done(function (data) { ask = data.query.results.quote.Ask; })
+          .fail(function (jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+              $("#result").text('Request failed: ' + err);
+      });
+  }
+  getData();
+
+  window.onload = function () {
+  	var dataPoints = [{y : 206}];
+  	var chart = new CanvasJS.Chart("chartContainer", {
+  			title : {
+  				text : "Dynamic Data"
+  			},
+  			data : [{
+  					type : "spline",
+  					dataPoints : dataPoints
+  				}
+  			],
+        axisY:{
+         includeZero: false,
+         margin: 10
+       },
+       axisX:{
+         viewportMinimum: -1
+       }
+  		});
+
+  	chart.render();
+
+  	var updateCount = 0;
+  	var updateChart = function () {
+      updateCount++;
+      getData();
+      console.log(ask);
+
+  		dataPoints.push({
+  			y : parseFloat(ask)
+  		});
+
+
+      chart.options.title.text = "Update " + updateCount;
+
+      move_x = 1;
+      if (updateCount > 30) {
+        chart.options.axisX.viewportMinimum = chart.options.axisX.viewportMinimum + move_x;
+        move_x++;
+      }
+  		chart.render();
+
+	   };
+
+	// update chart every second
+	setInterval(function(){updateChart()}, 2000);
+}
+
+});
+</script>
+<script type = "text/javascript" src = "canvasjs.min.js" >  </script>
+</head>
+<body>
+  <h1>Market Pulse</h1>
+<div id = "chartContainer" style = "height: 300px; width: 100%;" />
+</body>
+</html>
