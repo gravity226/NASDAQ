@@ -14,7 +14,26 @@
           var data = encodeURIComponent("select * from yahoo.finance.quotes where symbol in ('" + symbol + "')");
 
           $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
-              .done(function (data) { ask = data.query.results.quote.Ask; })
+              .done(function (data) {
+                ask = data.query.results.quote.Ask;
+                $("#Ask").text(data.query.results.quote.Ask);
+                $("#Change").text(data.query.results.quote.Change);
+                $("#Open").text(data.query.results.quote.Open);
+                $("#PreviousClose").text(data.query.results.quote.PreviousClose);
+                $("#FiftydayMovingAverage").text(data.query.results.quote.FiftydayMovingAverage);
+                $("#PercentChangeFromFiftydayMovingAverage").text(data.query.results.quote.PercentChangeFromFiftydayMovingAverage);
+                $("#TwoHundreddayMovingAverage").text(data.query.results.quote.TwoHundreddayMovingAverage);
+                $("#PercentChangeFromTwoHundreddayMovingAverage").text(data.query.results.quote.PercentChangeFromTwoHundreddayMovingAverage);
+                $("#DaysLow").text(data.query.results.quote.DaysLow);
+                $("#DaysHigh").text(data.query.results.quote.DaysHigh);
+                $("#YearLow").text(data.query.results.quote.YearLow);
+                $("#YearHigh").text(data.query.results.quote.YearHigh);
+                $("#EarningsShare").text(data.query.results.quote.EarningsShare);
+                $("#EPSEstimateNextQuarter").text(data.query.results.quote.EPSEstimateNextQuarter);
+                $("#EPSEstimateCurrentYear").text(data.query.results.quote.EPSEstimateCurrentYear);
+                $("#EPSEstimateNextYear").text(data.query.results.quote.EPSEstimateNextYear);
+
+              })
               .fail(function (jqxhr, textStatus, error) {
               var err = textStatus + ", " + error;
                   $("#result").text('Request failed: ' + err);
@@ -117,10 +136,10 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask above">
+          <td id="Ask" class="ask above">
             Quote
           </td>
-          <td class="ask above">
+          <td id="Change" class="ask above">
             % Change
           </td>
         </tr>
@@ -133,7 +152,7 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask_2 above" colspan="2">
+          <td id="Open" class="ask_2 above" colspan="2">
             Quote
           </td>
         </tr>
@@ -146,7 +165,7 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask_2 above" colspan="2">
+          <td id="PreviousClose" class="ask_2 above" colspan="2">
             Quote
           </td>
         </tr>
@@ -167,10 +186,10 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask above">
+          <td id="FiftydayMovingAverage" class="ask above">
             Quote
           </td>
-          <td class="ask above">
+          <td id="PercentChangeFromFiftydayMovingAverage" class="ask above">
             %%%
           </td>
         </tr>
@@ -187,10 +206,10 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask above">
+          <td id="TwoHundreddayMovingAverage" class="ask above">
             Quote
           </td>
-          <td class="ask above">
+          <td id="PercentChangeFromTwoHundreddayMovingAverage" class="ask above">
             %%%
           </td>
         </tr>
@@ -214,10 +233,10 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask above">
+          <td id="DaysLow" class="ask above">
             Quote
           </td>
-          <td class="ask above">
+          <td id="DaysHigh" class="ask above">
             Quote
           </td>
         </tr>
@@ -237,10 +256,10 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask above">
+          <td id="YearLow" class="ask above">
             Quote
           </td>
-          <td class="ask above">
+          <td id="YearHigh" class="ask above">
             Quote
           </td>
         </tr>
@@ -256,7 +275,7 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask_2 above" colspan="2">
+          <td id="EarningsShare" class="ask_2 above" colspan="2">
             Quote
           </td>
         </tr>
@@ -269,7 +288,7 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask_2 above" colspan="2">
+          <td id="EPSEstimateNextQuarter" class="ask_2 above" colspan="2">
             Quote
           </td>
         </tr>
@@ -282,7 +301,7 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask_2 above" colspan="2">
+          <td id="EPSEstimateCurrentYear" class="ask_2 above" colspan="2">
             Quote
           </td>
         </tr>
@@ -295,7 +314,7 @@
           </th>
         </tr>
         <tr class="ask">
-          <td class="ask_2 above" colspan="2">
+          <td id="EPSEstimateNextYear" class="ask_2 above" colspan="2">
             Quote
           </td>
         </tr>
