@@ -45,5 +45,37 @@ def display():
                             com_name=com_name,
                             quote=quote)
 
+@app.route('/history')
+def history():
+    sym='AAPL'
+    share = Share(sym)
+    historical = share.get_historical('2016-03-13', '2016-04-12')
+    canvas_list = []
+    for day in historical:
+        canvas_list.append([int(day['Date'][:4]),
+                            int(day['Date'][5:7]) - 1,
+                            int(day['Date'][-2:]),
+                            float(day['Open']),
+                            float(day['High']),
+                            float(day['Low']),
+                            float(day['Close'])
+                            ])
+    info = share.get_info()
+    open = share.get_open()
+    high = share.get_days_high()
+    low = share.get_days_low()
+    price = share.get_price()
+    canvas_list.append([int(info['end'][:4]),
+                        int(info['end'][5:7]) - 1,
+                        int(info['end'][-2:]),
+                        float(open),
+                        float(high),
+                        float(low),
+                        float(price)
+                        ])
+
+    return render_template('history.html',
+                            canvas_list=canvas_list)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)

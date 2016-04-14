@@ -104,9 +104,9 @@
       <li class="navbar"><div class="sc"><a href="#" class="nav">Market Pulse</a></div></li>
     </ul>
     <ul class="navbar-right">
-      <li class="navbar"><a href="#" class="nav">Search</a></li>
-      <li class="navbar"><a href="#" class="selected nav">Stream</a></li>
-      <li class="navbar"><a href="#" class="nav">History</a></li>
+      <li class="navbar"><a href="{{ url_for('form') }}" class="nav">Search</a></li>
+      <li class="navbar"><a href="{{ url_for('display') }}" class="selected nav">Stream</a></li>
+      <li class="navbar"><a href="{{ url_for('history') }}" class="nav">History</a></li>
       <li class="navbar"><a href="#" class="nav">Predict</a></li>
       <li class="navbar"><a href="#" class="nav">Contact</a></li>
     </ul>
