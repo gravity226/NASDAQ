@@ -14,7 +14,7 @@ $(document).ready(function(){
   var high;
   function getData() {
       var url = "http://query.yahooapis.com/v1/public/yql";
-      var symbol = "AAPL";
+      var symbol = "{{ sym }}";
       var data = encodeURIComponent("select * from yahoo.finance.quotes where symbol in ('" + symbol + "')");
 
       $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
