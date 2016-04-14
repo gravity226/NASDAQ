@@ -91,20 +91,16 @@ def get_forest_data_sym(df_full):
     y = df_full['pred'].values
     return X, y
 
-def add_zeros(df):
+def add_dummies(df):
     companies = hand_made_list()
     # companies = {'AAPL': "apple" }
     currencies = ["EURUSD", "USDJPY", "GBPUSD", "USDCHF", "EURJPY", "EURGBP", "USD", "EUR", "JPY", "GBP", "CHF"]
 
-    df = pd.DataFrame()
-    no_data = []
     for sym in companies.keys():
         if sym not in currencies and sym != 'CAM': # drop CAM because not enough data in Yahoo Fiance
             df[sym] = 0
+            df[sym] = df['sym'].apply(lambda asdf: 1 if asdf == sym else 0)
     return df
-
-def add_ones(df):
-     return df
 
 if __name__ == '__main__':
     df = get_nmf()
