@@ -14,15 +14,15 @@ from yahoo_finance import Share
 import matplotlib.pyplot as plt
 
 
-def load_json(sym):  # pull the subsetted json file containing the json tweets
-    with open('data_week_1/' + sym.upper() + '.json') as data_file:
+def load_json(sym, path='data_week_1'):  # pull the subsetted json file containing the json tweets
+    with open(path + '/' + sym.upper() + '.json') as data_file:
         data = json.load(data_file)
 
     print "***** Loaded tweets, %i found for %s.. *****" % (len(data), sym)
     return data
 
-def nmf_to_df(sym, k=4):  # Find the weights of latents features in a group of tweets and return them in a df
-    data = load_json(sym)
+def nmf_to_df(sym, k=4, path='data_week_1'):  # Find the weights of latents features in a group of tweets and return them in a df
+    data = load_json(sym, path)
 
     sents = [ sentence['text'] for sentence in data ]
     dates = [ str(text['created_at']) for text in data ]
