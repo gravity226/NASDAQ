@@ -65,7 +65,14 @@ def display():
 
 @app.route('/history')
 def history():
-    sym = session['sym']
+    # If a user goes to the display page and a session is not active
+    if session.get('active') != True:
+        sym = 'SPY'
+        session['active'] = True
+        session['sym'] = sym
+    else:
+        sym = session['sym'] # if a session is active leave the sym alone
+
     share = Share(sym)
     historical = share.get_historical('2016-03-13', '2016-04-13')
     canvas_list = []
@@ -98,10 +105,42 @@ def history():
 
 @app.route('/predict')
 def predict():
-    sym = session['sym']
+    # If a user goes to the display page and a session is not active
+    if session.get('active') != True:
+        sym = 'SPY'
+        session['active'] = True
+        session['sym'] = sym
+    else:
+        sym = session['sym'] # if a session is active leave the sym alone
+
     share = Share(sym)
 
     return render_template('predict.html')
+
+@app.route('/test')
+def test():
+    # Is the user coming from the form page?
+    try:
+        sym = str(request.form['user_input']).strip().upper() or 'SPY'
+        session['active'] = True
+        session['sym'] = sym
+    except:
+        # If a user goes to the display page and a session is not active
+        if session.get('active') != True:
+            sym = 'SPY'
+            session['active'] = True
+            session['sym'] = sym
+        else:
+            sym = session['sym'] # if a session is active leave the sym alone
+
+    share = Share(sym)
+    quote = float(share.get_price())
+    com_name = hand_made_list()[sym][0]
+
+    return render_template('test.html',
+                            sym=session['sym'],
+                            com_name=com_name,
+                            quote=quote)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)

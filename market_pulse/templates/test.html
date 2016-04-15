@@ -1,9 +1,340 @@
-<h3> Sup Flask? </h3>
-<p> This a a Flask app in testing </p>
-{% for n in name: %}
-    {{ n }} <br>
-{% endfor %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Market Pulse</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static',filename='canvasjs.min.js') }}" >  </script>
+    <script type = "text/javascript" >
+    $(document).ready(function(){
+      var ask;
+      function getData() {
+          var url = "http://query.yahooapis.com/v1/public/yql";
+          var symbol = "{{ sym }}";
+          var data = encodeURIComponent("select * from yahoo.finance.quotes where symbol in ('" + symbol + "')");
 
-<p>
-  {{ user_input }}
-</p>
+          $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
+              .done(function (data) {
+                ask = data.query.results.quote.Ask;
+                $("#Ask").text(data.query.results.quote.Ask);
+                $("#Change").text(data.query.results.quote.Change);
+                $("#Open").text(data.query.results.quote.Open);
+                $("#PreviousClose").text(data.query.results.quote.PreviousClose);
+                $("#FiftydayMovingAverage").text(data.query.results.quote.FiftydayMovingAverage);
+                $("#PercentChangeFromFiftydayMovingAverage").text(data.query.results.quote.PercentChangeFromFiftydayMovingAverage);
+                $("#TwoHundreddayMovingAverage").text(data.query.results.quote.TwoHundreddayMovingAverage);
+                $("#PercentChangeFromTwoHundreddayMovingAverage").text(data.query.results.quote.PercentChangeFromTwoHundreddayMovingAverage);
+                $("#DaysLow").text(data.query.results.quote.DaysLow);
+                $("#DaysHigh").text(data.query.results.quote.DaysHigh);
+                $("#YearLow").text(data.query.results.quote.YearLow);
+                $("#YearHigh").text(data.query.results.quote.YearHigh);
+                $("#EarningsShare").text(data.query.results.quote.EarningsShare);
+                $("#EPSEstimateNextQuarter").text(data.query.results.quote.EPSEstimateNextQuarter);
+                $("#EPSEstimateCurrentYear").text(data.query.results.quote.EPSEstimateCurrentYear);
+                $("#EPSEstimateNextYear").text(data.query.results.quote.EPSEstimateNextYear);
+
+              })
+              .fail(function (jqxhr, textStatus, error) {
+              var err = textStatus + ", " + error;
+                  $("#result").text('Request failed: ' + err);
+          });
+      }
+      getData();
+
+      window.onload = function () {
+      	var dataPoints = [{ y : {{ quote }} }, { y : {{ quote }} }];
+      	var chart = new CanvasJS.Chart("chartContainer", {
+      			title : {
+      				text : "{{ com_name }}"
+      			},
+      			data : [{
+      					type : "spline",
+      					dataPoints : dataPoints,
+                margin: 30
+      				}
+      			],
+            axisY:{
+             includeZero: false,
+             margin: 30
+           },
+           axisX:{
+             viewportMinimum: -1
+           }
+      		});
+
+      	chart.render();
+
+      	var updateCount = 0;
+      	var updateChart = function () {
+          updateCount++;
+          getData();
+          console.log(ask);
+
+      		dataPoints.push({
+      			y : parseFloat(ask)
+      		});
+
+
+          // chart.options.title.text = "Update " + updateCount;
+
+          move_x = 1;
+          if (updateCount > 30) {
+            chart.options.axisX.viewportMinimum = chart.options.axisX.viewportMinimum + move_x;
+            move_x++;
+          }
+      		chart.render();
+
+    	   };
+
+    	// update chart every second
+    	setInterval(function(){updateChart()}, 1500);
+    }
+
+    });
+    </script>
+
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <div class="navbar">
+    <ul class=navbar-left>
+      <li class="navbar"><div class="sc"><a href="#" class="nav">Market Pulse</a></div></li>
+    </ul>
+    <ul class="navbar-right">
+      <li class="navbar"><a href="{{ url_for('form') }}" class="nav">Search</a></li>
+      <li class="navbar"><a href="{{ url_for('display') }}" class="selected nav">Stream</a></li>
+      <li class="navbar"><a href="{{ url_for('history') }}" class="nav">History</a></li>
+      <li class="navbar"><a href="{{ url_for('predict') }}" class="nav">Predict</a></li>
+      <li class="navbar"><a href="{{ url_for('test') }}" class="nav">Test</a></li>
+      <li class="navbar"><a href="#" class="nav">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- BODY -->
+
+  <!-- Canvas Graph -->
+  <div class="content">
+    <div class="container">
+      <div id = "chartContainer" style = "height: 300px; width: 100%;" />
+      <br />
+    </div>
+  </div>
+
+  <div class="divider">
+    <h2>Real Time Data</h2>
+  </div>
+
+  <!-- Ask Box -->
+  <div class="ask">
+    <div class="box">
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Ask
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="Ask" class="ask above">
+            Quote
+          </td>
+          <td id="Change" class="ask above">
+            % Change
+          </td>
+        </tr>
+      </table>
+
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Open
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="Open" class="ask_2 above" colspan="2">
+            Quote
+          </td>
+        </tr>
+      </table>
+
+      <table class="ask">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Previous Close
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="PreviousClose" class="ask_2 above" colspan="2">
+            Quote
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  <!-- Moving Average Box -->
+    <div class="box">
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask above" colspan="2">
+            50 Day
+          </th>
+        </tr>
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Moving Average
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="FiftydayMovingAverage" class="ask above">
+            Quote
+          </td>
+          <td id="PercentChangeFromFiftydayMovingAverage" class="ask above">
+            %%%
+          </td>
+        </tr>
+      </table>
+      <table class="ask">
+        <tr class="ask">
+          <th class="ask above" colspan="2">
+            200 Day
+          </th>
+        </tr>
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Moving Average
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="TwoHundreddayMovingAverage" class="ask above">
+            Quote
+          </td>
+          <td id="PercentChangeFromTwoHundreddayMovingAverage" class="ask above">
+            %%%
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Highs & Lows Box -->
+    <div class="box">
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask above" colspan="2">
+            Today's
+          </th>
+        </tr>
+        <tr class="ask">
+          <th class="ask">
+            Low
+          </th>
+          <th class="ask">
+            High
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="DaysLow" class="ask above">
+            Quote
+          </td>
+          <td id="DaysHigh" class="ask above">
+            Quote
+          </td>
+        </tr>
+      </table>
+      <table class="ask">
+        <tr class="ask">
+          <th class="ask above" colspan="2">
+            Year's
+          </th>
+        </tr>
+        <tr class="ask">
+          <th class="ask">
+            Low
+          </th>
+          <th class="ask">
+            High
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="YearLow" class="ask above">
+            Quote
+          </td>
+          <td id="YearHigh" class="ask above">
+            Quote
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Earning Estimate Box -->
+    <div class="box">
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Earnings Per Share
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="EarningsShare" class="ask_2 above" colspan="2">
+            Quote
+          </td>
+        </tr>
+      </table>
+
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Est. EPS Next Quarter
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="EPSEstimateNextQuarter" class="ask_2 above" colspan="2">
+            Quote
+          </td>
+        </tr>
+      </table>
+
+      <table class="ask table_bottom bottom_border">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Est. EPS Current Year
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="EPSEstimateCurrentYear" class="ask_2 above" colspan="2">
+            Quote
+          </td>
+        </tr>
+      </table>
+
+      <table class="ask">
+        <tr class="ask">
+          <th class="ask" colspan="2">
+            Est. EPS Next Year
+          </th>
+        </tr>
+        <tr class="ask">
+          <td id="EPSEstimateNextYear" class="ask_2 above" colspan="2">
+            Quote
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider">
+    <h2>Streaming Twitter and News</h2>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="content">
+    <div class="container">
+      Tommy Martin (<a href="mailto:gravity226@gmail.com">Stray Coder</a>)
+    </div>
+  </div>
+
+</body>
+
+
+</html>
