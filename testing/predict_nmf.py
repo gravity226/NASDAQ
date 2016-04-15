@@ -104,7 +104,7 @@ def get_classifier_data(df):
 
 def get_regressor_data(df):
     y = df['dif_in_close'].values
-    cols = df.columns
+    cols = list(df.columns)
     cols.remove('pred')
     cols.remove('sym')
     cols.remove('dif_in_close')
@@ -138,32 +138,35 @@ if __name__ == '__main__':
     rf_class = RandomForestClassifier(n_estimators=1000)
     rf_class.fit(X_class, y_class)
     #
-    # X_regress, y_regress = get_regressor_data(df_full)
-    # rf_regress = RandomForestRegressor(n_estimators=1000)
-    # rf_regress.fit(X_regress, y_regress)
+    X_regress, y_regress = get_regressor_data(df_full)
+    rf_regress = RandomForestRegressor(n_estimators=1000)
+    rf_regress.fit(X_regress, y_regress)
     #
     # # search_on = df_full[df_full['sym'] =='GOOG'].ix['2016-04-08'][['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
     #
-    classify_on = get_classifier_data(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-11']) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
-    classify_on_12 = get_classifier_data(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-12']) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
-    classify_on_13 = get_classifier_data(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-13']) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
+
+    # ----- If there is only one value in the filter you will need to transpose it
+    classify_on = get_classifier_data(pd.DataFrame(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-11']).transpose()) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
+    classify_on_12 = get_classifier_data(pd.DataFrame(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-12']).transpose()) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
+    classify_on_13 = get_classifier_data(pd.DataFrame(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-13']).transpose()) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
     #
-    # regress_on = get_regressor_data(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-11']) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
-    # regress_on_12 = get_regressor_data(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-12']) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
-    # regress_on_13 = get_regressor_data(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-13']) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
+    regress_on = get_regressor_data(pd.DataFrame(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-11']).transpose()) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
+    regress_on_12 = get_regressor_data(pd.DataFrame(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-12']).transpose()) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
+    regress_on_13 = get_regressor_data(pd.DataFrame(df_test_full[df_test_full['sym'] == 'GOOG'].ix['2016-04-13']).transpose()) # [['lat0', 'lat1', 'lat2', 'lat3', 'open', 'close', 'high', 'low']].values
     #
     # print ''
-    # print "Predict Tuesday", rf_class.predict(classify_on)
-    # print "Predict Wednesday", rf_class.predict(classify_on_12)
-    # print "Predict Thursday", rf_class.predict(classify_on_13)
-    # print ''
-    # print "Regress Pred Tuesday", rf_regress.predict(regress_on)
-    # print "Regress Pred Wednesday", rf_regress.predict(regress_on_12)
-    # print "Regress Pred Thursday", rf_regress.predict(regress_on_13)
+    print "Predict Tuesday", rf_class.predict(classify_on[0])
+    print "Predict Wednesday", rf_class.predict(classify_on_12[0])
+    print "Predict Thursday", rf_class.predict(classify_on_13[0])
+    print ''
+    print "Regress Pred Tuesday", rf_regress.predict(regress_on[0])
+    print "Regress Pred Wednesday", rf_regress.predict(regress_on_12[0])
+    print "Regress Pred Thursday", rf_regress.predict(regress_on_13[0])
 
+    X_classify, y_classify  = get_classifier_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
 
-
-
+    # Find feature importance to try to find any kind of lag time between tweets and how the market moves
+    
 
 
 
