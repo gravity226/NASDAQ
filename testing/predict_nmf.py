@@ -1,6 +1,7 @@
 from yahoo_finance import Share
 import pandas as pd
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
@@ -23,7 +24,7 @@ def get_stock_data(sym, start_date, end_date):
 
     return data
 
-def get_nmf(path='data_week_1'):
+def get_nmf(path='data_week_1', k=4):
     companies = hand_made_list()
     # companies = {'AAPL': "apple" }
     currencies = ["EURUSD", "USDJPY", "GBPUSD", "USDCHF", "EURJPY", "EURGBP", "USD", "EUR", "JPY", "GBP", "CHF"]
@@ -33,7 +34,7 @@ def get_nmf(path='data_week_1'):
     for sym in companies.keys():
         if sym not in currencies and sym != 'CAM': # drop CAM because not enough data in Yahoo Fiance
             try:
-                temp_df = nt.nmf_to_df(sym, 4, path)  # symbol based on 4 features
+                temp_df = nt.nmf_to_df(sym, k, path)  # symbol based on 4 features
                 df = pd.concat([df, temp_df])
             except:
                 no_data.append(sym)
