@@ -105,6 +105,7 @@ def get_classifier_data(df):
 def get_regressor_data(df):
     y = df['dif_in_close'].values
     cols = list(df.columns)
+    # trying with and without the pred column; doesn't seem to make a difference; MSE remains the same
     cols.remove('pred')
     cols.remove('sym')
     cols.remove('dif_in_close')
@@ -164,9 +165,10 @@ if __name__ == '__main__':
     print "Regress Pred Thursday", rf_regress.predict(regress_on_13[0])
 
     X_classify, y_classify  = get_classifier_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
+    X_regress, y_regress = get_regressor_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
 
     # Find feature importance to try to find any kind of lag time between tweets and how the market moves
-    
+
 
 
 
