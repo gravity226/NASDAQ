@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Market Pulse</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <div class="navbar">
+    <ul class=navbar-left>
+      <li class="navbar"><div class="sc"><a href="#" class="nav">Market Pulse</a></div></li>
+    </ul>
+    <ul class="navbar-right">
+      <li class="navbar"><a href="{{ url_for('form') }}" class="nav">Search</a></li>
+      <li class="navbar"><a href="{{ url_for('display') }}" class="nav">Stream</a></li>
+      <!-- <li class="navbar"><a href="{{ url_for('history') }}" class="nav">History</a></li> -->
+      <li class="navbar"><a href="{{ url_for('predict') }}" class="nav">Predict</a></li>
+      <li class="navbar"><a href="{{ url_for('contact') }}" class="selected nav">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- BODY -->
+  <div class="content">
+  <div class="container">
+    There are a lot of way to get in touch with me on the web.</br></br>
+    LinkedIn: <a href="https://www.linkedin.com/in/gravity226">Tommy Martin</a></br>
+    GitHub: <a href="https://github.com/gravity226">gravity226</a></br>
+    Facebook: <a href="https://www.facebook.com/tommy.martin.7528">Tommy Martin</a></br></br>
+
+    Or just shoot me an email: <a href="mailto:gravity226@gmail.com">Tommy Martin</a>
+    </br>
+  </div>
+</div>
+
+</body>
+
+
+</html>
