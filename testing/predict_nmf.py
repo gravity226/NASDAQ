@@ -67,6 +67,7 @@ def add_yahoo_to_df(df):
                                       # last cell adds the difference in closing prices from "today" to "tomorrow"
                 # print 'Added', sym
             except:
+                print daily_data
                 stock_values.append([ float(daily_data[-1]['Open']),
                                       float(daily_data[-1]['Close']),
                                       float(daily_data[-1]['High']),

@@ -8,6 +8,9 @@
     <script type = "text/javascript" >
     $(document).ready(function(){
       var ask;
+      var open;
+      var low;
+      var high;
       function getData() {
           var url = "http://query.yahooapis.com/v1/public/yql";
           var symbol = "{{ sym }}";
@@ -15,7 +18,10 @@
 
           $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
               .done(function (data) {
-                ask = data.query.results.quote.Ask;
+                open = parseFloat(data.query.results.quote.Open);
+                ask = parseFloat(data.query.results.quote.Ask);
+                low = parseFloat(data.query.results.quote.DaysLow);
+                high = parseFloat(data.query.results.quote.DaysHigh);
                 $("#Ask").text(data.query.results.quote.Ask);
                 $("#Change").text(data.query.results.quote.Change);
                 $("#Open").text(data.query.results.quote.Open);
@@ -43,7 +49,7 @@
 
       window.onload = function () {
       	var dataPoints = [{ y : {{ quote }} }, { y : {{ quote }} }];
-      	var chart = new CanvasJS.Chart("chartContainer", {
+      	var line_chart = new CanvasJS.Chart("chartContainerLine", {
       			title : {
       				text : "{{ com_name }}"
       			},
@@ -62,6 +68,46 @@
            }
       		});
 
+      	line_chart.render();
+
+        var data_list = {{ canvas_list|safe }};
+        var candle_points = [];
+        for (x = 0; x < data_list.length; x++) {
+          candle_points.push({ x: new Date(data_list[x][0], data_list[x][1], data_list[x][2]),
+                               y: [ data_list[x][3], data_list[x][4], data_list[x][5], data_list[x][6] ],
+                               color: "Black",
+                               borderColor: "#BF0000"});
+        }
+
+      	var chart = new CanvasJS.Chart("chartContainer",
+      	{
+      		title:{
+      			text: "Historical Candlestick Chart",
+      		},
+      		exportEnabled: true,
+      		axisY: {
+      			includeZero: false,
+      			prefix: "$",
+            stripLines:[
+                  {
+                      value: 0,
+                      color:"#BF0000",
+                      label : "112.04",
+                      labelFontColor: "#BF0000",
+                      lineDashType: "dash"
+                  }
+                  ]
+      		},
+      		axisX: {
+      			valueFormatString: "DD-MMM",
+      		},
+      		data: [
+      		{
+      			type: "candlestick",
+      			dataPoints: candle_points
+      		}
+      		]
+      	});
       	chart.render();
 
       	var updateCount = 0;
@@ -79,10 +125,22 @@
 
           move_x = 1;
           if (updateCount > 30) {
-            chart.options.axisX.viewportMinimum = chart.options.axisX.viewportMinimum + move_x;
+            line_chart.options.axisX.viewportMinimum = line_chart.options.axisX.viewportMinimum + move_x;
             move_x++;
           }
-      		chart.render();
+      		line_chart.render();
+
+          chart.options.data[0].dataPoints[chart.options.data[0].dataPoints.length-1].y = [open, high, low, ask];
+          // chart.options.data[0].dataPoints.shift();
+          chart.options.axisY.stripLines[0].value = ask;
+          chart.options.axisY.stripLines[0].label = ask;
+          // dataPoints.push({
+          //   y : parseFloat(ask)
+          // });
+
+
+          // chart.options.title.text = "Update " + updateCount;
+          chart.render();
 
     	   };
 
@@ -118,7 +176,7 @@
   <!-- Canvas Graph -->
   <div class="content">
     <div class="container">
-      <div id = "chartContainer" style = "height: 300px; width: 100%;" />
+      <div id = "chartContainerLine" style = "height: 300px; width: 100%;" />
       <br />
     </div>
   </div>
@@ -323,8 +381,11 @@
     </div>
   </div>
 
-  <div class="divider">
-    <h2>Streaming Twitter and News</h2>
+  <div class="content">
+    <div class="container">
+      <div id = "chartContainer" style = "height: 300px; width: 100%;" />
+      <br />
+    </div>
   </div>
 
   <!-- FOOTER -->

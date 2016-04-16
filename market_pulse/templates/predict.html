@@ -5,6 +5,143 @@
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="https://gist.github.com/emeeks/3361332/raw/61cf57523fe8cf314333e5f60cc266351fec2017/d3.layout.cloud.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static',filename='canvasjs.min.js') }}" >  </script>
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+      var ask;
+      var open;
+      var low;
+      var high;
+      function getData() {
+          var url = "http://query.yahooapis.com/v1/public/yql";
+          var symbol = "{{ sym }}";
+          var data = encodeURIComponent("select * from yahoo.finance.quotes where symbol in ('" + symbol + "')");
+
+          $.getJSON(url, 'q=' + data + "&format=json&diagnostics=true&env=http://datatables.org/alltables.env")
+              .done(function (data) {
+                open = parseFloat(data.query.results.quote.Open);
+                ask = parseFloat(data.query.results.quote.Ask);
+                low = parseFloat(data.query.results.quote.DaysLow);
+                high = parseFloat(data.query.results.quote.DaysHigh);
+                $("#Ask").text(data.query.results.quote.Ask);
+                $("#Change").text(data.query.results.quote.Change);
+                $("#Open").text(data.query.results.quote.Open);
+                $("#PreviousClose").text(data.query.results.quote.PreviousClose);
+                $("#FiftydayMovingAverage").text(data.query.results.quote.FiftydayMovingAverage);
+                $("#PercentChangeFromFiftydayMovingAverage").text(data.query.results.quote.PercentChangeFromFiftydayMovingAverage);
+                $("#TwoHundreddayMovingAverage").text(data.query.results.quote.TwoHundreddayMovingAverage);
+                $("#PercentChangeFromTwoHundreddayMovingAverage").text(data.query.results.quote.PercentChangeFromTwoHundreddayMovingAverage);
+                $("#DaysLow").text(data.query.results.quote.DaysLow);
+                $("#DaysHigh").text(data.query.results.quote.DaysHigh);
+                $("#YearLow").text(data.query.results.quote.YearLow);
+                $("#YearHigh").text(data.query.results.quote.YearHigh);
+                $("#EarningsShare").text(data.query.results.quote.EarningsShare);
+                $("#EPSEstimateNextQuarter").text(data.query.results.quote.EPSEstimateNextQuarter);
+                $("#EPSEstimateCurrentYear").text(data.query.results.quote.EPSEstimateCurrentYear);
+                $("#EPSEstimateNextYear").text(data.query.results.quote.EPSEstimateNextYear);
+
+              })
+              .fail(function (jqxhr, textStatus, error) {
+              var err = textStatus + ", " + error;
+                  $("#result").text('Request failed: ' + err);
+          });
+      }
+      getData();
+
+      var data_list = {{ canvas_list|safe }};
+      var candle_points = [];
+      for (x = 0; x < data_list.length; x++) {
+        candle_points.push({ x: new Date(data_list[x][0], data_list[x][1], data_list[x][2]),
+                             y: data_list[x][3] });
+      }
+      // var pred = [ { x: new Date(data_list[x][0], data_list[x][1], data_list[x][2]),
+      //                y: [ 207, 209 ] } ]
+      // console.log(candle_points)
+
+      window.onload = function () {
+          var chart = new CanvasJS.Chart("chartContainer",
+          {
+            // theme: "theme2",
+            title:{
+              text: "Stock Prices"
+            },
+            animationEnabled: true,
+            axisX: {
+              valueFormatString: "DD-MMM",
+              stripLines:[
+        			{
+        				startValue: new Date(2016, 03, 15, 16),
+        				endValue: new Date(2016, 03, 16, 8),
+                color: "#f2f2f2"
+        			}
+              ]
+            },
+            axisY:{
+              includeZero: false,
+        			prefix: "$",
+              stripLines:[
+                    {
+                        value: 0,
+                        color:"#BF0000",
+                        label : "112.04",
+                        labelFontColor: "#BF0000",
+                        lineDashType: "dash"
+                    }
+                    ]
+
+            },
+            data: [
+            {
+              type: "candlestick",
+              fillOpacity: .1,
+              color: "red",
+              //lineThickness: 3,
+              dataPoints: [{ x: new Date(2016, 03, 16),
+                             y: [ {{box1_high}}, {{box1_high}}, {{box1_low}}, {{box1_low}} ],
+                             toolTipContent: "RMSE</br>Upper: {y[0]}</br>Lower: {y[2]}" },
+                           { x: new Date(2016, 03, 16),
+                             y: [ {{box2_low}}, {{box2_high}}, {{box2_low}}, {{box2_high}} ],
+                             toolTipContent: "RMSE * 2</br>Upper: {y[1]}</br>Lower: {y[2]}" }],
+              // content: "RMSE</br><strong>High:</strong></br>Upper Bound:{y[0]}, Lower Bound:{y[2]}"
+            },
+            {
+              type: "line",
+              color: "black",
+              //lineThickness: 3,
+              dataPoints: candle_points
+            }
+
+            ]
+          });
+
+      chart.render();
+
+      var updateCount = 0;
+      var updateChart = function () {
+        getData();
+        console.log(ask)
+        chart.options.data[1].dataPoints[chart.options.data[0].dataPoints.length-1].y = ask;
+        // chart.options.data[0].dataPoints.shift();
+        // chart.options.axisY.stripLines[0].value = ask;
+        // chart.options.axisY.stripLines[0].label = ask;
+        // dataPoints.push({
+        //   y : parseFloat(ask)
+        // });
+
+
+        // chart.options.title.text = "Update " + updateCount;
+        chart.render();
+
+       };
+
+    // update chart every 1.5 seconds
+    setInterval(function(){updateChart()}, 1500);
+  }
+
+  });
+</script>
 </head>
 
 <body>
@@ -18,7 +155,7 @@
     <ul class="navbar-right">
       <li class="navbar"><a href="{{ url_for('form') }}" class="nav">Search</a></li>
       <li class="navbar"><a href="{{ url_for('display') }}" class="nav">Stream</a></li>
-      <li class="navbar"><a href="{{ url_for('history') }}" class="nav">History</a></li>
+      <!-- <li class="navbar"><a href="{{ url_for('history') }}" class="nav">History</a></li> -->
       <li class="navbar"><a href="{{ url_for('predict') }}" class="selected nav">Predict</a></li>
       <li class="navbar"><a href="#" class="nav">Contact</a></li>
     </ul>
@@ -27,9 +164,8 @@
   <!-- BODY -->
 
   <div class="content">
-    <div class="search">
-      <h2>Nothing Yet...</h2><br />
-
+    <div class="container">
+      <div id="chartContainer" style="height: 300px; width: 100%;"></div>
       </br>
     </div>
   </div>

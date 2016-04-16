@@ -58,10 +58,36 @@ def display():
     quote = float(share.get_price())
     com_name = hand_made_list()[sym][0]
 
+    historical = share.get_historical('2016-03-13', '2016-04-15')
+    canvas_list = []
+    for day in historical:
+        canvas_list.append([int(day['Date'][:4]),
+                            int(day['Date'][5:7]) - 1,
+                            int(day['Date'][-2:]),
+                            float(day['Open']),
+                            float(day['High']),
+                            float(day['Low']),
+                            float(day['Close'])
+                            ])
+    info = share.get_info()
+    open = share.get_open()
+    high = share.get_days_high()
+    low = share.get_days_low()
+    price = share.get_price()
+    canvas_list.append([int(info['end'][:4]),
+                        int(info['end'][5:7]) - 1,
+                        int(info['end'][-2:]),
+                        float(open),
+                        float(high),
+                        float(low),
+                        float(price)
+                        ])
+
     return render_template('display.html',
                             sym=session['sym'],
                             com_name=com_name,
-                            quote=quote)
+                            quote=quote,
+                            canvas_list=canvas_list)
 
 @app.route('/history')
 def history():
@@ -74,7 +100,7 @@ def history():
         sym = session['sym'] # if a session is active leave the sym alone
 
     share = Share(sym)
-    historical = share.get_historical('2016-03-13', '2016-04-13')
+    historical = share.get_historical('2016-03-13', '2016-04-15')
     canvas_list = []
     for day in historical:
         canvas_list.append([int(day['Date'][:4]),
@@ -115,7 +141,44 @@ def predict():
 
     share = Share(sym)
 
-    return render_template('predict.html')
+    historical = share.get_historical('2016-04-06', '2016-04-15') # need to auto input the date...
+
+    canvas_list = []
+
+    info = share.get_info()
+    open = share.get_open()
+    high = share.get_days_high()
+    low = share.get_days_low()
+    price = share.get_price()
+    canvas_list.append([int(info['end'][:4]),
+                        int(info['end'][5:7]) - 1,
+                        int(info['end'][-2:]),
+                        float(price)
+                        ])
+
+    for day in historical:
+        canvas_list.append([int(day['Date'][:4]),
+                            int(day['Date'][5:7]) - 1,
+                            int(day['Date'][-2:]),
+                            float(day['Close'])
+                            ])
+
+    predicted_value = 208
+    predicted_rmse = 1.5
+
+    box1_low = predicted_value - (predicted_rmse / 2.)
+    box1_high = predicted_value + (predicted_rmse / 2.)
+
+    box2_low = predicted_value - (predicted_rmse)
+    box2_high = predicted_value + (predicted_rmse)
+
+    return render_template('predict.html',
+                            canvas_list=canvas_list,
+                            sym=sym,
+                            box1_low=box1_low,
+                            box1_high=box1_high,
+                            box2_low = box2_low,
+                            box2_high=box2_high)
 
 @app.route('/test')
 def test():
