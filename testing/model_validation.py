@@ -296,18 +296,50 @@ def check_best_avg_depth(features=1):
         print depth
 
     return depth_list
+"""
+Average of best depths:
+
+3000 trees, 1 k
+
+None 0.542105263158 2.18122982183
+5 0.624561403509 2.249251348
+6 0.618421052632 2.21187286668
+7 0.619298245614 2.19727563378 ***     RMSE = 1.4823210292578326; RMSE * 2 = 2.964642058515665
+8 0.65 2.20146380609  ***       RMSE = 1.4837330642976183; RMSE * 2 = 2.9674661285952366
+9 0.64649122807 2.20213679443
+10 0.639473684211 2.21960170354
+11 0.634210526316 2.22494498963
+12 0.638596491228 2.21985572031
+13 0.622807017544 2.21702180514
+14 0.592105263158 2.20751031597
+15 0.588596491228 2.20469748456
+16 0.579824561404 2.2233967189
+17 0.578947368421 2.19995303197
+18 0.583333333333 2.19176872357 **
+19 0.580701754386 2.19816619472
+20 0.578947368421 2.19718779634
+
+"""
 
 def check_num_trees(features=1):
-    trees = [ 1000, 2000, 3000, 4000, 5000 ]  # There are roughly 4000 observations here...
+    trees = [ 1000, 2000, 3000 ] #, 4000, 5000 ]  # There are roughly 4000 observations here...
 
     # Create dataframes
-    df = get_nmf(k=features)
-    df_full = add_yahoo_to_df(df)
-    df_full = add_dummies(df_full)
+    # df = get_nmf(k=features)
+    # df_full = add_yahoo_to_df(df)
+    # df_full = add_dummies(df_full)
+    #
+    # df_test = get_nmf('data_wednesday', k=features) # put in folder name where the json data is
+    # df_test_full = add_yahoo_to_df(df_test)
+    # df_test_full = add_dummies(df_test_full)
 
-    df_test = get_nmf('data_wednesday', k=features) # put in folder name where the json data is
-    df_test_full = add_yahoo_to_df(df_test)
-    df_test_full = add_dummies(df_test_full)
+    df_full = pd.read_csv('data_week_1/pd_data.csv')
+    df_full.index = df_full['adj_date']
+    df_full.pop('adj_date')
+
+    df_test_full = pd.read_csv('data_wednesday/pd_data.csv')
+    df_test_full.index = df_test_full['adj_date']
+    df_test_full.pop('adj_date')
 
     # Get X and y values
     X_model_class, y_model_class = get_classifier_data(df_full)
@@ -323,10 +355,10 @@ def check_num_trees(features=1):
         # print "Checking depth of:", depth
 
         # Create models
-        rf_class = RandomForestClassifier(n_estimators=forest, max_depth=19)
+        rf_class = RandomForestClassifier(n_estimators=forest, max_depth=8)
         rf_class.fit(X_model_class, y_model_class)
         #
-        rf_regress = RandomForestRegressor(n_estimators=forest, max_depth=19)
+        rf_regress = RandomForestRegressor(n_estimators=forest, max_depth=8)
         rf_regress.fit(X_model_regress, y_model_regress)
 
         classifier_preds = rf_class.predict(X_classify)
@@ -373,6 +405,102 @@ Ran with k = 1 and max_depth = 19:
 
 """
 
+"""
+Ran with k = 1 and max_depth = 8:
+[1000, 0.63157894736842102, 2.2533259388734721]
+[2000, 0.64912280701754388, 2.1400595165304299]
+[3000, 0.64912280701754388, 2.2724326304015423]
+
+[1000, 0.64912280701754388, 2.2189445684987175]
+[2000, 0.64912280701754388, 2.1903665863941244]
+[3000, 0.63157894736842102, 2.2179205690907278]
+
+[1000, 0.64912280701754388, 2.1613786753298498]
+[2000, 0.64912280701754388, 2.1906358607631455]
+[3000, 0.64912280701754388, 2.2617489995879314]
+
+[1000, 0.64912280701754388, 2.1563194365500093]
+[2000, 0.64912280701754388, 2.2076657992276112]
+[3000, 0.64912280701754388, 2.2206936084364242]
+
+"""
+
+def check_avg_num_trees(features=1):
+    trees = [ 1000, 2000, 3000 ] #, 4000, 5000 ]  # There are roughly 4000 observations here...
+
+    # Create dataframes
+    # df = get_nmf(k=features)
+    # df_full = add_yahoo_to_df(df)
+    # df_full = add_dummies(df_full)
+    #
+    # df_test = get_nmf('data_wednesday', k=features) # put in folder name where the json data is
+    # df_test_full = add_yahoo_to_df(df_test)
+    # df_test_full = add_dummies(df_test_full)
+
+    df_full = pd.read_csv('data_week_1/pd_data.csv')
+    df_full.index = df_full['adj_date']
+    df_full.pop('adj_date')
+
+    df_test_full = pd.read_csv('data_wednesday/pd_data.csv')
+    df_test_full.index = df_test_full['adj_date']
+    df_test_full.pop('adj_date')
+
+    # Get X and y values
+    X_model_class, y_model_class = get_classifier_data(df_full)
+    X_model_regress, y_model_regress = get_regressor_data(df_full)
+
+    X_classify, y_classify  = get_classifier_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
+    X_regress, y_regress = get_regressor_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
+
+    # Run models
+
+    tree_list = []
+    for forest in trees:
+        # print "Checking depth of:", depth
+        class_list = []
+        regress_list = []
+        for n in range(20):
+            # Create models
+            rf_class = RandomForestClassifier(n_estimators=forest, max_depth=19)
+            rf_class.fit(X_model_class, y_model_class)
+            #
+            rf_regress = RandomForestRegressor(n_estimators=forest, max_depth=19)
+            rf_regress.fit(X_model_regress, y_model_regress)
+
+            classifier_preds = rf_class.predict(X_classify)
+            classifier_accuracy = accuracy_score(classifier_preds, y_classify)
+
+            regressor_preds = rf_regress.predict(X_regress)
+            regressor_mse = mean_squared_error(regressor_preds, y_regress)
+
+            class_list.append(classifier_accuracy)
+            regress_list.append(regressor_mse)
+
+        tree_list.append([ forest, class_list, regress_list ])
+        print forest
+    print tree_list[0][0], sum(tree_list[0][1])/float(len(tree_list[0][1])), sum(tree_list[0][2])/float(len(tree_list[0][2]))
+    print tree_list[1][0], sum(tree_list[0][1])/float(len(tree_list[1][1])), sum(tree_list[0][2])/float(len(tree_list[1][2]))
+    print tree_list[2][0], sum(tree_list[2][1])/float(len(tree_list[2][1])), sum(tree_list[2][2])/float(len(tree_list[2][2]))
+
+    return tree_list
+
+"""
+Calculated with depth = 8 and k = 1
+1000 0.636842105263 2.19705465188
+2000 0.636842105263 2.19705465188
+3000 0.64298245614 2.19904695207
+
+"""
+
+"""
+Calculated with depth = 19 and k = 1
+
+1000 0.588596491228 2.20265519394
+2000 0.588596491228 2.20265519394
+3000 0.576315789474 2.2003004483
+"""
+
+
 # The classifier gett a better score based on number of k and depth than the regressor and vice versa.
 # Check to see if adding the prediction of the classifier wil help the regressor.  This might be helpful
 # because the classifier will use a different number of features than the regressor.
@@ -418,19 +546,110 @@ def get_df_of_k(features):
 #     print [ depth, classifier_accuracy, regressor_mse ]
 
 def most_important_features():
-    pass
+    df_full = pd.read_csv('data_week_1/pd_data.csv')
+    df_full.index = df_full['adj_date']
+    df_full.pop('adj_date')
+
+    df_test_full = pd.read_csv('data_wednesday/pd_data.csv')
+    df_test_full.index = df_test_full['adj_date']
+    df_test_full.pop('adj_date')
+
+    # Get X and y values
+    X_model_class, y_model_class = get_classifier_data(df_full)
+    X_model_regress, y_model_regress = get_regressor_data(df_full)
+
+    X_classify, y_classify  = get_classifier_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
+    X_regress, y_regress = get_regressor_data(pd.DataFrame(df_test_full.ix['2016-04-11']))
+
+    # Run models
+    rf_class = RandomForestClassifier(n_estimators=2000, max_depth=19)
+    rf_class.fit(X_model_class, y_model_class)
+    #
+    rf_regress = RandomForestRegressor(n_estimators=2000, max_depth=19)
+    rf_regress.fit(X_model_regress, y_model_regress)
+
+    classifier_preds = rf_class.predict(X_classify)
+    classifier_accuracy = accuracy_score(classifier_preds, y_classify)
+
+    regressor_preds = rf_regress.predict(X_regress)
+    regressor_mse = mean_squared_error(regressor_preds, y_regress)
+
+    class_list = list(rf_class.feature_importances_)
+    reg_list = list(rf_regress.feature_importances_)
+
+    cols = list(df_full.columns)
+    cols.remove('pred')
+    cols.remove('sym')
+    cols.remove('dif_in_close')
+    cols.remove('next_day_close')
+
+    data_c = zip(cols,reg_list)
+    data_r = zip(cols,reg_list)
+
+    data_c.sort(key=lambda tup: tup[1], reverse=True)
+    data_r.sort(key=lambda tup: tup[1], reverse=True)
+
+    print data_c[:10]
+    print data_r[:10]
+
+    return rf_class, rf_regress
+
+"""
+Most important features for Classifier Model:
+[('lat0', 0.16969738804724091),
+ ('close', 0.15513201094488732),
+ ('high', 0.1505704519732225),
+ ('open', 0.14962158355717048),
+ ('low', 0.14093097263571583),
+ ('PBR', 0.013781522621546928),
+ ('GDX', 0.010025548660019789),
+ ('XLU', 0.0089636863214729006),
+ ('BBRY', 0.0078691414522946718),
+ ('MSFT', 0.0077486513052343262)]
+"""
+
+"""
+Most important features for Regressor Model:
+[('NFLX', 0.2713176848526217),
+ ('close', 0.16004893626273475),
+ ('low', 0.11946041480634537),
+ ('high', 0.11456397866999884),
+ ('open', 0.095351422820087073),
+ ('GNCA', 0.086851456961255555),
+ ('lat0', 0.075254433973897653),
+ ('ORCL', 0.022107492630498563),
+ ('UCO', 0.0163618287507316),
+ ('BBRY', 0.013567339252276768)]
+"""
 
 if __name__ == '__main__':
     scores = get_best_k()
     # depth_list = check_best_depth()
     # tree_list = check_num_trees()
 
+"""
+Final thoughts:
+Best K latent features for nmf:
+[1, 0.57894736842105265, 2.1791716966865917]
+1 feature was surprising but did do better than everything else by at least .05 cents
 
+Best Depth:
+8 0.65 2.20146380609  ***       RMSE = 1.4837330642976183; RMSE * 2 = 2.9674661285952366  ** on average
+The difference between a couple of them was only a few tenths off which does not account for much
+difference.  I went to the one with the best accuracy on the classifier and the best MSE on
+the regressor.  I was surprised again about this because the there were other depths that were
+getting lower scores; some that were around 2.07.  But thier averages were not consistant.
 
+Best number of trees:
+1000 0.636842105263 2.19705465188  ** on average
+2000 0.636842105263 2.19705465188  ** on average
+Going to use 2000 trees just so that I don't under fit.
 
-
-
-
+Final Forest:
+K = 1
+Depth = 8
+Num Trees = 2000
+"""
 
 
 

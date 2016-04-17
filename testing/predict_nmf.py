@@ -94,6 +94,8 @@ def add_yahoo_to_df(df):
 
     return df
 
+# u'lat0', u'open', u'close', u'high', u'low', u'NFLX', u'XLI', u'XLF', u'AAPL', u'PBR',
+
 def get_classifier_data(df):
     y = df['pred'].values
     cols = list(df.columns)
