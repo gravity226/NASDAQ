@@ -141,7 +141,7 @@ def predict():
 
     share = Share(sym)
 
-    historical = share.get_historical('2016-04-06', '2016-04-15') # need to auto input the date...
+    historical = share.get_historical('2016-04-10', '2016-04-17') # need to auto input the date...
 
     canvas_list = []
 
@@ -207,7 +207,7 @@ def test():
 
 @app.route('/contact')
 def contact():
-    
+
     return render_template('contact.html')
 
 if __name__ == "__main__":
