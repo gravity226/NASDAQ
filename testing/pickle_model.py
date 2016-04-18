@@ -39,4 +39,4 @@ def pickle_model(class_name="class_model.pkl", regress_name="regress_model.pkl")
         pickle.dump(rf_regress, f)
 
 if __name__ == '__name__':
-    pass
+    pickle_model()

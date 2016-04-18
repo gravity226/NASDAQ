@@ -141,7 +141,7 @@ def predict():
 
     share = Share(sym)
 
-    historical = share.get_historical('2016-04-10', '2016-04-17') # need to auto input the date...
+    historical = share.get_historical('2016-04-12', '2016-04-17') # need to auto input the date...
 
     canvas_list = []
 
@@ -163,8 +163,15 @@ def predict():
                             float(day['Close'])
                             ])
 
-    predicted_value = 208
-    predicted_rmse = 1.5
+    df_preds = pd.read_csv('data/predictions.csv')
+    date = df_preds[df_preds['sym'] == sym]['date'].values[0]
+    historical_day = float(share.get_historical(date, date)[0]['Close'])
+    year = date[:4]
+    month = date[5:7]
+    day = date[-2:]
+
+    predicted_value = historical_day + df_preds[df_preds['sym'] == sym]['regressor_mse'].values[0]
+    predicted_rmse = df_preds[df_preds['sym'] == sym]['mse'].values[0] ** .5
 
     box1_low = predicted_value - (predicted_rmse / 2.)
     box1_high = predicted_value + (predicted_rmse / 2.)
@@ -178,7 +185,10 @@ def predict():
                             box1_low=box1_low,
                             box1_high=box1_high,
                             box2_low = box2_low,
-                            box2_high=box2_high)
+                            box2_high=box2_high,
+                            year=year,
+                            month=month,
+                            day=day)
 
 @app.route('/test')
 def test():
