@@ -46,7 +46,7 @@ def save_preds(date='2016-04-14'):
 
     df_save.to_csv('predictions.csv')
 
-    print classifier_accuracy, regressor_mse
+    print df_full
 
     # return df_save
 

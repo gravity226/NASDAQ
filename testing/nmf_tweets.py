@@ -33,10 +33,12 @@ def nmf_to_df(sym, k=4, path='data_week_1'):  # Find the weights of latents feat
     X = vectorizer.fit_transform(sents)
     #features = vectorizer.get_feature_names()
     print "Tweets vectorized..."
+    feats = vectorizer.get_feature_names()
 
     model = NMF(n_components=k, init='random', random_state=0)
     latent_features = model.fit_transform(X)
     print "Model created..."
+    coms = model.components_
 
     df = pd.DataFrame(latent_features)   #np.concatenate((d, latent_features), axis=1)
     df.columns = [ 'lat'+ str(n) for n in xrange(len(df.columns)) ]
