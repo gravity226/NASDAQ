@@ -63,7 +63,7 @@ def display():
             sym = session['sym'] # if a session is active leave the sym alone
 
     share = Share(sym)
-    if 'start' not in share.get_info():
+    if 'start' not in share.get_info():  # is there information related to the stock symbol in Yahoo Finance?
         # if request.method == 'POST':
         #     print "This is a test"
         #     # if request.form['submit'] == 'Submit':
@@ -77,7 +77,7 @@ def display():
         quote = float(share.get_price())
         com_name = sym #hand_made_list()[sym][0]
 
-        try:
+        try:  # Error handling...  Some Stock symbols exist but there is no historical and/or daily information in Yahoo Finance...
             historical = share.get_historical('2016-03-13', '2016-04-18')
             canvas_list = []
             for day in historical:
@@ -161,7 +161,7 @@ def predict():
     else:
         sym = session['sym'] # if a session is active leave the sym alone
 
-    try:
+    try:  # Error handling...  Some Stock symbols exist but there is no historical information in Yahoo Finance...
         share = Share(sym)
 
         historical = share.get_historical('2016-04-12', '2016-04-18') # need to auto input the date...
@@ -214,7 +214,7 @@ def predict():
                                 day=day)
     except:
         return redirect("/error")
-        
+
 @app.route('/test')
 def test():
     # Is the user coming from the form page?
