@@ -3,7 +3,7 @@ from predict_nmf import *
 from nmf_tweets import *
 
 def get_test():
-    df_test = get_nmf(path='data_thursday', k=1) # put in folder name where the json data is
+    df_test = get_nmf(path='data_04_19', k=1) # put in folder name where the json data is
     df_test_full = add_yahoo_to_df(df_test)
     df_test_full = add_dummies(df_test_full)
 

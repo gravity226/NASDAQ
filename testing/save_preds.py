@@ -11,7 +11,7 @@ def save_preds(date='2016-04-14'):
     df_full.index = df_full['adj_date']
     df_full.pop('adj_date')
 
-    df_test_full = pd.read_csv('data_wednesday/pd_data.csv')
+    df_test_full = pd.read_csv('data_thursday/pd_data.csv')
     df_test_full.index = df_test_full['adj_date']
     df_test_full.pop('adj_date')
 

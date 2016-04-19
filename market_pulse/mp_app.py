@@ -3,7 +3,7 @@ import requests
 from top_companies import hand_made_list
 import os
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 
@@ -38,6 +38,15 @@ def form():
     return render_template('form.html',
                             companies=companies.keys())
 
+@app.route('/error')
+def error():
+    if request.method == 'POST':
+        if request.form['submit'] == 'Submit':
+            session['active'] = False
+    companies = hand_made_list()
+    return render_template('error.html',
+                            companies=companies.keys())
+
 @app.route('/display', methods=['POST', 'GET'])
 def display():
     # Is the user coming from the form page?
@@ -55,39 +64,50 @@ def display():
             sym = session['sym'] # if a session is active leave the sym alone
 
     share = Share(sym)
-    quote = float(share.get_price())
-    com_name = hand_made_list()[sym][0]
+    if 'start' not in share.get_info():
+        # if request.method == 'POST':
+        #     print "This is a test"
+        #     # if request.form['submit'] == 'Submit':
+        #     #     print "before change session"
+        #         # session['active'] = False
+        print "before return"
+        return redirect("/error")
+        # return render_template('error.html',
+        #                         sym=session['sym'])
+    else:
+        quote = float(share.get_price())
+        com_name = hand_made_list()[sym][0]
 
-    historical = share.get_historical('2016-03-13', '2016-04-15')
-    canvas_list = []
-    for day in historical:
-        canvas_list.append([int(day['Date'][:4]),
-                            int(day['Date'][5:7]) - 1,
-                            int(day['Date'][-2:]),
-                            float(day['Open']),
-                            float(day['High']),
-                            float(day['Low']),
-                            float(day['Close'])
+        historical = share.get_historical('2016-03-13', '2016-04-18')
+        canvas_list = []
+        for day in historical:
+            canvas_list.append([int(day['Date'][:4]),
+                                int(day['Date'][5:7]) - 1,
+                                int(day['Date'][-2:]),
+                                float(day['Open']),
+                                float(day['High']),
+                                float(day['Low']),
+                                float(day['Close'])
+                                ])
+        info = share.get_info()
+        open = share.get_open()
+        high = share.get_days_high()
+        low = share.get_days_low()
+        price = share.get_price()
+        canvas_list.append([int(info['end'][:4]),
+                            int(info['end'][5:7]) - 1,
+                            int(info['end'][-2:]),
+                            float(open),
+                            float(high),
+                            float(low),
+                            float(price)
                             ])
-    info = share.get_info()
-    open = share.get_open()
-    high = share.get_days_high()
-    low = share.get_days_low()
-    price = share.get_price()
-    canvas_list.append([int(info['end'][:4]),
-                        int(info['end'][5:7]) - 1,
-                        int(info['end'][-2:]),
-                        float(open),
-                        float(high),
-                        float(low),
-                        float(price)
-                        ])
 
-    return render_template('display.html',
-                            sym=session['sym'],
-                            com_name=com_name,
-                            quote=quote,
-                            canvas_list=canvas_list)
+        return render_template('display.html',
+                                sym=session['sym'],
+                                com_name=com_name,
+                                quote=quote,
+                                canvas_list=canvas_list)
 
 @app.route('/history')
 def history():
@@ -141,7 +161,7 @@ def predict():
 
     share = Share(sym)
 
-    historical = share.get_historical('2016-04-12', '2016-04-17') # need to auto input the date...
+    historical = share.get_historical('2016-04-12', '2016-04-18') # need to auto input the date...
 
     canvas_list = []
 

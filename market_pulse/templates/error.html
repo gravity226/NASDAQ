@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Market Pulse</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://gist.github.com/emeeks/3361332/raw/61cf57523fe8cf314333e5f60cc266351fec2017/d3.layout.cloud.js"></script>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <div class="navbar">
+    <ul class=navbar-left>
+      <li class="navbar"><div class="sc"><a href="#" class="nav">Market Pulse</a></div></li>
+    </ul>
+    <ul class="navbar-right">
+      <li class="navbar"><a href="{{ url_for('form') }}" class="selected nav">Search</a></li>
+      <li class="navbar"><a href="{{ url_for('display') }}" class="nav">Stream</a></li>
+      <!-- <li class="navbar"><a href="{{ url_for('history') }}" class="nav">History</a></li> -->
+      <li class="navbar"><a href="{{ url_for('predict') }}" class="nav">Predict</a></li>
+      <li class="navbar"><a href="#" class="nav">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- BODY -->
+
+  <div class="content">
+    <div class="search">
+      <h2>Could not find {{sym}}</h2><br />
+      Please try a different search item.
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="search">
+      <h2>Search Top Stock Symbols</h2><br />
+      <form action="/display" method='POST' >
+          <input type="text" name="user_input" placeholder="Search.." /><br />
+          <input type="submit" class="button" value="Submit" />
+      </form>
+      </br>
+    </div>
+  </div>
+
+  <!-- <div class="content" align="center">
+    Do I want to visualize the companies that can be predicted on???<br /><br />
+    {{ companies }}
+  </div> -->
+
+</body>
+
+
+</html>
