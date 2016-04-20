@@ -8,4 +8,4 @@ This web app allows users to search for different stocks and get predictions fro
 ### Modeling
 [Modeling and data cleaning/gathering](https://github.com/gravity226/NASDAQ/tree/master/testing)
 
-All of the data was pulled using the twitter API and saved to my AWS EC2 instance.  The modeling that was done include word to vect, nonnegative matrix factorization, and random forest classification and regression.
+All of the data was pulled using the twitter API and saved to my AWS EC2 instance.  The modeling that was done includes word to vect, nonnegative matrix factorization, and random forest classification and regression.
