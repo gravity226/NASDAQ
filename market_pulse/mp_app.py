@@ -74,11 +74,10 @@ def display():
         # return render_template('error.html',
         #                         sym=session['sym'])
     else:
-        quote = float(share.get_price())
-        com_name = sym #hand_made_list()[sym][0]
-
         try:  # Error handling...  Some Stock symbols exist but there is no historical and/or daily information in Yahoo Finance...
-            historical = share.get_historical('2016-03-13', '2016-04-18')
+            quote = float(share.get_price())
+            com_name = sym #hand_made_list()[sym][0]
+            historical = share.get_historical('2016-03-13', '2016-04-19')
             canvas_list = []
             for day in historical:
                 canvas_list.append([int(day['Date'][:4]),
@@ -164,7 +163,7 @@ def predict():
     try:  # Error handling...  Some Stock symbols exist but there is no historical information in Yahoo Finance...
         share = Share(sym)
 
-        historical = share.get_historical('2016-04-12', '2016-04-18') # need to auto input the date...
+        historical = share.get_historical('2016-04-14', '2016-04-19') # need to auto input the date...
 
         canvas_list = []
 

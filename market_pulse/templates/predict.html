@@ -72,8 +72,8 @@
               valueFormatString: "DD-MMM",
               stripLines:[
         			{
-        				startValue: new Date(2016, 03, 18, 16),
-        				endValue: new Date(2016, 03, 19, 8),
+        				startValue: new Date(2016, 03, 19, 16),
+        				endValue: new Date(2016, 03, 20, 8),
                 color: "#f2f2f2"
         			}
               ]
@@ -98,10 +98,10 @@
               fillOpacity: .1,
               color: "red",
               //lineThickness: 3,
-              dataPoints: [{ x: new Date(2016, 03, 19),
+              dataPoints: [{ x: new Date(2016, 03, 20),
                              y: [ {{box1_high}}, {{box1_high}}, {{box1_low}}, {{box1_low}} ],
                              toolTipContent: "RMSE</br>Upper: {y[0]}</br>Lower: {y[2]}" },
-                           { x: new Date(2016, 03, 19),
+                           { x: new Date(2016, 03, 20),
                              y: [ {{box2_low}}, {{box2_high}}, {{box2_low}}, {{box2_high}} ],
                              toolTipContent: "RMSE * 2</br>Upper: {y[1]}</br>Lower: {y[2]}" }],
               // content: "RMSE</br><strong>High:</strong></br>Upper Bound:{y[0]}, Lower Bound:{y[2]}"
