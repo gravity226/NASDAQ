@@ -1,4 +1,4 @@
-# NASDAQ - Market Pulse Capstone Project
+Market Pulse Capstone Project
 
 ### Web Application
 [Market Pulse](https://github.com/gravity226/NASDAQ/tree/master/market_pulse)
