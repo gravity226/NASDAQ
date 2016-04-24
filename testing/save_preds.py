@@ -6,12 +6,12 @@ from sklearn.metrics import accuracy_score, mean_squared_error
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor
 
-def save_preds(date='2016-04-14'):
+def save_preds(date='2016-04-19'):  # dat = the day of test data
     df_full = pd.read_csv('data_week_1/pd_data.csv')
     df_full.index = df_full['adj_date']
     df_full.pop('adj_date')
 
-    df_test_full = pd.read_csv('data_thursday/pd_data.csv')
+    df_test_full = pd.read_csv('data_04_21/pd_data.csv')
     df_test_full.index = df_test_full['adj_date']
     df_test_full.pop('adj_date')
 

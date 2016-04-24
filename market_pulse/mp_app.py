@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 from top_companies import hand_made_list
 import os
+import datetime as dt
 
 from flask import Flask, render_template, request, session, redirect
 app = Flask(__name__)
@@ -48,6 +49,7 @@ def error():
 
 @app.route('/display', methods=['POST', 'GET'])
 def display():
+    today = dt.date.today()
     # Is the user coming from the form page?
     try:
         sym = str(request.form['user_input']).strip().upper() or 'SPY'
@@ -77,7 +79,7 @@ def display():
         try:  # Error handling...  Some Stock symbols exist but there is no historical and/or daily information in Yahoo Finance...
             quote = float(share.get_price())
             com_name = sym #hand_made_list()[sym][0]
-            historical = share.get_historical('2016-03-13', '2016-04-19')
+            historical = share.get_historical(str(today - dt.timedelta(31)), str(today - dt.timedelta(1)))
             canvas_list = []
             for day in historical:
                 canvas_list.append([int(day['Date'][:4]),
@@ -152,6 +154,18 @@ def history():
 
 @app.route('/predict')
 def predict():
+    today = dt.date.today()
+    if today.isoweekday() == 6:
+        pred_date = today - dt.timedelta(1)
+    elif today.isoweekday() == 7:
+        pred_date = today - dt.timedelta(2)
+    else:
+        pred_date = today
+
+    pred_day = int(pred_date.day)
+    pred_month = int(pred_date.month)
+    pred_year = int(pred_date.year)
+
     # If a user goes to the display page and a session is not active
     if session.get('active') != True:
         sym = 'SPY'
@@ -163,7 +177,7 @@ def predict():
     try:  # Error handling...  Some Stock symbols exist but there is no historical information in Yahoo Finance...
         share = Share(sym)
 
-        historical = share.get_historical('2016-04-14', '2016-04-19') # need to auto input the date...
+        historical = share.get_historical(str(today - dt.timedelta(5)), str(today - dt.timedelta(1))) # need to auto input the date...
 
         canvas_list = []
 
@@ -210,7 +224,10 @@ def predict():
                                 box2_high=box2_high,
                                 year=year,
                                 month=month,
-                                day=day)
+                                day=day,
+                                pred_day=pred_day,
+                                pred_month=pred_month,
+                                pred_year=pred_year)
     except:
         return redirect("/error")
 
