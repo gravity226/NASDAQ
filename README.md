@@ -7,6 +7,7 @@
  - [Exploratory Data Analysis](https://github.com/gravity226/NASDAQ#exploratory-data-analysis)
  - [Modeling](https://github.com/gravity226/NASDAQ#modeling)
  - [Web App](https://github.com/gravity226/NASDAQ#web-app)
+ - [Conclusion](https://github.com/gravity226/NASDAQ#conclusion)
 
 ### Gathering Tweets
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/twitter_to_mongo.jpg" width="200" />
@@ -70,3 +71,7 @@ Finally I wanted to turn this project into a usable application.  To do this I u
 <b>Prediction Page</b><br />
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/predict1.jpg" width="800" />
 <br />
+
+
+### Conclusion
+In the end I believe that using unsupervised learning techniques, like Nonnegative Matrix Factorization, is a great way to fuel supervised learning techniques like Random Forest Regression.  I used a lot of new technologies in this project and learned a lot in the process.  I hope that this project has shown that I am a capable Data Scientist, Application Developer, and Interface Designer.  These are three areas that I greatly enjoy working in. 
