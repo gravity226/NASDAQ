@@ -5,6 +5,7 @@
  - [Gathering Tweets](https://github.com/gravity226/NASDAQ#gathering-tweets)
  - [Streaming Stock Quotes](https://github.com/gravity226/NASDAQ#streaming-stock-quotes)
  - [Exploratory Data Analysis](https://github.com/gravity226/NASDAQ#exploratory-data-analysis)
+ - [Modeling](https://github.com/gravity226/NASDAQ#modeling)
 
 ### Gathering Tweets
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/twitter_to_mongo.jpg" width="200" />
@@ -40,3 +41,12 @@ I can also get an idea of what people are saying about a particular stock symbol
 
 <b>Word Cloud for #YHOO or Yahoo</b><br />
 <img src="https://github.com/gravity226/NASDAQ/blob/master/testing/YHOO_wc1.png" width="500" />
+
+
+### Modeling
+To start I used a [Random Forest Classifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) to see if I could simply identify whether the a particular stock symbol would increase or decrease in value in the following day.  For this approach I was getting close to %70 accuracy so I decided to move on to creating a [Random Forest Regression](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) model.  For this approach I was using the [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or Root Mean Squared Error, and the [MSE](https://en.wikipedia.org/wiki/Mean_squared_error) or Mean Squared Error to get an idea of where a stock price would close in the next day.
+
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/predict.png" width="700" />
+<br />
+
+This image shows the closing prices for a weeks worth of data for the TSLA (Tesla) stock symbol.  The red box to the right of the graph shows where my model is predicting the market will fall for that day.  (You will probably notice that two points are missing here.. This is because those dates were on Saturday and Sunday and there will be no closing prices for those days.)
