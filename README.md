@@ -6,6 +6,7 @@
  - [Streaming Stock Quotes](https://github.com/gravity226/NASDAQ#streaming-stock-quotes)
  - [Exploratory Data Analysis](https://github.com/gravity226/NASDAQ#exploratory-data-analysis)
  - [Modeling](https://github.com/gravity226/NASDAQ#modeling)
+ - [Web App](https://github.com/gravity226/NASDAQ#web-app)
 
 ### Gathering Tweets
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/twitter_to_mongo.jpg" width="200" />
@@ -44,7 +45,7 @@ I can also get an idea of what people are saying about a particular stock symbol
 
 
 ### Modeling
-To start I used a [Random Forest Classifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) to see if I could simply identify whether the a particular stock symbol would increase or decrease in value in the following day.  For this approach I was getting close to %70 accuracy so I decided to move on to creating a [Random Forest Regression](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) model.  For this approach I was using the [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or Root Mean Squared Error, and the [MSE](https://en.wikipedia.org/wiki/Mean_squared_error) or Mean Squared Error to get an idea of where a stock price would close in the next day.
+To start I used a [Random Forest Classifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) to see if I could simply identify whether the a particular stock symbol would increase or decrease in value in the following day.  From this approach I was getting close to %70 accuracy so I decided to move on to creating a [Random Forest Regression](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) model.  For this approach I was using the [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) or Root Mean Squared Error, and the [MSE](https://en.wikipedia.org/wiki/Mean_squared_error) or Mean Squared Error to get an idea of where a stock price would close in the next day.
 
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/predict1.jpg" width="800" />
 <br />
@@ -52,4 +53,20 @@ To start I used a [Random Forest Classifier](http://scikit-learn.org/stable/modu
 This image shows the closing prices for a weeks worth of data for the TSLA (Tesla) stock symbol.  The red box to the right of the graph shows where my model is predicting the market will fall for that day.  (You will probably notice that two points are missing here.. This is because those dates were on Saturday and Sunday and there will be no closing prices for those days.)
 
 <b>NMF and Regression</b><br />
-When working with Nonnegative Matrix Factorization or NMF you need a way to figure what the best number of features to use is. For this I gauged how a certain number of features changed the MSE in the Regression model.  That code can be found in [model_validation.py](https://github.com/gravity226/NASDAQ/blob/master/testing/model_validation.py).  This code is basically my version of [Grid Searching](https://en.wikipedia.org/wiki/Hyperparameter_optimization) a different number of NMF features and different Random Forest metrics.
+When working with Nonnegative Matrix Factorization, or NMF, you need a way to figure what the best number of features to use is. For this I gauged how a certain number of features changed the MSE in the Regression model.  That code can be found in [model_validation.py](https://github.com/gravity226/NASDAQ/blob/master/testing/model_validation.py).  This code is basically my version of [Grid Searching](https://en.wikipedia.org/wiki/Hyperparameter_optimization) a different number of NMF features and different Random Forest metrics.
+
+
+### Web App
+Finally I wanted to turn this project into a usable application.  To do this I used [Flask](http://flask.pocoo.org/) to create a web application that could allow a user to search different stock symbols, live stream stock quotes, give historical stock data, and display the predictions my model was making for the different stock symbols.
+
+<b>Search Page</b><br />
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/search.jpg" width="800" />
+<br />
+
+<b>Streaming Page</b><br />
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/stream.jpg" width="800" />
+<br />
+
+<b>Prediction Page</b><br />
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/predict1.jpg" width="800" />
+<br />
