@@ -20,6 +20,9 @@ Both historical and current stock quotes were gathered via the [Yahoo Finance](h
 
 See [save_stock_tweets.py](https://github.com/gravity226/NASDAQ/blob/master/stream_quotes/yahoo_quotes.py) for the code.  This includes some data cleaning and preliminary modeling.
 
+<i>First Attempt</i>
+My first attempt at getting stock data involved scraping the NASDAQ website in real time for current and historic stock quotes.  See [scrape_nasdaq.py](https://github.com/gravity226/NASDAQ/blob/master/scrape_nasdaq.py) for the code.  I ended up not using this method because it was very time consuming to get quotes.  This made it unreasonable considering I wanted to live stream quotes in a web app.  
+
 ### Exploratory Data Analysis
 An easy way to get an idea of what your data is doing is to visualize it.  For this project I used [TFIDF](http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html) and [Nonnegative Matrix Factorization](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html) to get an easily interpretable result to graph and model.
 
