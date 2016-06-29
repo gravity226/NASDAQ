@@ -51,7 +51,7 @@ To start I used a [Random Forest Classifier](http://scikit-learn.org/stable/modu
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/predict1.jpg" width="800" />
 <br />
 
-This image shows the closing prices for a weeks worth of data for the TSLA (Tesla) stock symbol.  The red box to the right of the graph shows where my model is predicting the market will fall for that day.  (You will probably notice that two points are missing here.. This is because those dates were on Saturday and Sunday and there will be no closing prices for those days.)
+This image shows the closing prices for a weeks worth of data for the TSLA (Tesla) stock symbol.  The red box to the right of the graph shows where my model is predicting the market will close for that day.  (You will probably notice that two points are missing here.. This is because those dates were on Saturday and Sunday and there will be no closing prices for those days.)
 
 <b>NMF and Regression</b><br />
 When working with Nonnegative Matrix Factorization, or NMF, you need a way to figure what the best number of features to use is. For this I gauged how a certain number of features changed the MSE in the Regression model.  That code can be found in [model_validation.py](https://github.com/gravity226/NASDAQ/blob/master/testing/model_validation.py).  This code is basically my version of [Grid Searching](https://en.wikipedia.org/wiki/Hyperparameter_optimization) a different number of NMF features and different Random Forest metrics.
@@ -74,4 +74,4 @@ Finally I wanted to turn this project into a usable application.  To do this I u
 
 
 ### Conclusion
-In the end I believe that using unsupervised learning techniques, like Nonnegative Matrix Factorization, is a great way to fuel supervised learning techniques like Random Forest Regression.  I used a lot of new technologies in this project and learned a lot in the process.  I hope that this project has shown that I am a capable Data Scientist, Application Developer, and Interface Designer.  These are three areas that I greatly enjoy working in. 
+In the end I believe that using unsupervised learning techniques, like Nonnegative Matrix Factorization, is a great way to fuel supervised learning techniques like Random Forest Regression.  I used a lot of new technologies in this project and learned a lot in the process.  I hope that this project has shown that I am a capable Data Scientist, Application Developer, and Interface Designer.  These are three areas that I greatly enjoy working in.
