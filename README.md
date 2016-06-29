@@ -29,3 +29,13 @@ An easy way to get an idea of what your data is doing is to visualize it.  For t
 So what does this tell me?  Well the blue line represents the closing price for a stock symbol for that day and the red lines represent the NMF values for a stock symbol for that day.  What I can see from this is that when the red lines go up then the stock market also goes up in the next day. And possibly the same is true for when the market goes down.  
 
 See [clustering.py](https://github.com/gravity226/NASDAQ/blob/master/testing/clustering.py) for the code.
+
+I can also get an idea of what people are saying about a particular stock symbol by looking at the most used words that relate to it.  Enter the word cloud:
+
+<b>Word Cloud for #AAPL or Apple</b>
+
+<img src="https://github.com/gravity226/NASDAQ/blob/master/testing/AAPL_wc.png" width="500" />
+
+<b>Word Cloud for #YHOO or Yahoo</b>
+
+<img src="https://github.com/gravity226/NASDAQ/blob/master/testing/YHOO_wc.png" width="500" />
