@@ -6,7 +6,7 @@
 
 
 ### Gathering Tweets
-<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/twitter_to_mongo.jpg" />
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/twitter_to_mongo.jpg" width="200" />
 Tweets were gathered using the [Tweepy](http://www.tweepy.org/) Python library.  Tweets were streamed in real time and saved to a MongoDB database.  Anywhere from 4-6 million tweets were gathered per day.
 
 See [save_stock_tweets.py](https://github.com/gravity226/NASDAQ/blob/master/testing/save_stock_tweets.py) for the code.
