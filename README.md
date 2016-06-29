@@ -32,10 +32,8 @@ See [clustering.py](https://github.com/gravity226/NASDAQ/blob/master/testing/clu
 
 I can also get an idea of what people are saying about a particular stock symbol by looking at the most used words that relate to it.  Enter the word cloud:
 
-<b>Word Cloud for #AAPL or Apple</b>
-
+<b>Word Cloud for #AAPL or Apple</b><br />
 <img src="https://github.com/gravity226/NASDAQ/blob/master/testing/AAPL_wc.png" width="500" />
 
-<b>Word Cloud for #YHOO or Yahoo</b>
-
+<b>Word Cloud for #YHOO or Yahoo</b><br />
 <img src="https://github.com/gravity226/NASDAQ/blob/master/testing/YHOO_wc.png" width="500" />
