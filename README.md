@@ -25,3 +25,7 @@ An easy way to get an idea of what your data is doing is to visualize it.  For t
 
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/figure_1.png" width="500" />
 <br />
+
+So what does this tell me?  Well the blue line represents the closing price for a stock symbol for that day and the red lines represent the NMF values for a stock symbol for that day.  What I can see from this is that when the red lines go up then the stock market also goes up in the next day. And possibly the same is true for when the market goes down.  
+
+See [clustering.py](https://github.com/gravity226/NASDAQ/blob/master/testing/clustering.py) for the code.
