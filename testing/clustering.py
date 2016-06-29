@@ -115,6 +115,7 @@ def graph_it(df):
         tl.set_color('c')
 
     plt.show()
+    # plt.savefig('imgs/eda_nmf_quotes.png')
 
 
 
@@ -131,6 +132,7 @@ if __name__ == '__main__':
         grouped_data = nmf_df(sym, k, coll)
         df = pd.concat([df, grouped_data])
 
+    graph_it(df)
     # df[df['sym'] == 'AAPL'].head()
     # df.ix['2016-04-03']
     # db.tweets.aggregate( [ {$match: {'text': { $in :[/GOOG/, /AAPL/] }}}, {$sample: { size: 1 }} ] )

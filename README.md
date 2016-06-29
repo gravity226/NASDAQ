@@ -1,9 +1,10 @@
 # Market Pulse
- - This project uses sentiment analysis from Twitter tweets to help make predictions on the stock market.  Every tweet used is associated to a particular stock symbol when a #(stock symbol) is found.  For example, the #SP500 is assumed to be related to the SP 500 stock.  
+ - This project uses sentiment analysis from Twitter tweets to help make predictions on the stock market.  Every tweet used is associated to a particular stock symbol when a #(stock symbol) or $(stock symbol) is found.  For example, the #SP500 or $SP500 is assumed to be related to the SP 500 stock.  
 
 ### Table Of Contents
  - [Gathering Tweets](https://github.com/gravity226/NASDAQ#gathering-tweets)
  - [Streaming Stock Quotes](https://github.com/gravity226/NASDAQ#streaming-stock-quotes)
+ - [Exploratory Data Analysis](https://github.com/gravity226/NASDAQ#exploratory-data-analysis)
 
 ### Gathering Tweets
 <img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/twitter_to_mongo.jpg" width="200" />
@@ -17,4 +18,10 @@ See [save_stock_tweets.py](https://github.com/gravity226/NASDAQ/blob/master/test
 <br />
 Both historical and current stock quotes were gathered via the [Yahoo Finance](https://pypi.python.org/pypi/yahoo-finance) Python library.  
 
-See [save_stock_tweets.py](https://github.com/gravity226/NASDAQ/blob/master/stream_quotes/yahoo_quotes.py) for the code.  This includes some data cleaning and preliminary modeling. 
+See [save_stock_tweets.py](https://github.com/gravity226/NASDAQ/blob/master/stream_quotes/yahoo_quotes.py) for the code.  This includes some data cleaning and preliminary modeling.
+
+### Exploratory Data Analysis
+An easy way to get an idea of what your data is doing is to visualize it.  For this project I used [TFIDF](http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html) and [Nonnegative Matrix Factorization](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html) to get an easily interpretable result to graph and model.
+
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/edf_nmf_quotes.png" width="500" />
+<br />
