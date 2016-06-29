@@ -11,10 +11,10 @@ import time
 from top_companies import get_companies, hand_made_list
 
 #Variables that contains the user credentials to access Twitter API
-access_token = "2355343910-2WPMYMG8srWvbbVBHD6wQBuRYMEHv61qDFpFZ6V"
-access_token_secret = "rNx1po32JApw6PuvvIcHYGcGphaDkeaWOFyLK0u3Zi3K9"
-consumer_key = "GclvOy6SP3M7HtACTg6uTlDPp"
-consumer_secret = "IbwkIem9BzS8Ebt9SRgGFauvjxqrDS6ISjkXoZ1j8EnIwCV4rK"
+access_token = os.environ['TWITTER_API_ACCESS_TOKEN']
+access_token_secret = os.environ['TWITTER_API_ACCESS_TOKEN_SECRET']
+consumer_key = os.environ['TWITTER_API_KEY']
+consumer_secret = os.environ['TWITTER_SECRET_API_KEY']
 
 #This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
@@ -66,7 +66,6 @@ def run_twitter_query():
             for cell in value:
                 search_list.append(cell)
 
-    #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
     stream.filter(track=search_list)
 
 if __name__ == '__main__':

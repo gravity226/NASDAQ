@@ -1,13 +1,11 @@
-# Market Pulse Capstone Project
+# Market Pulse
+ - This project uses sentiment analysis from Twitter tweets to help make predictions on the stock market.  Every tweet used is associated to a particular stock symbol when a #(stock symbol) is found.  For example, the #SP500 is assumed to be related to the SP 500 stock.  
 
-### Web Application
-[Market Pulse](https://github.com/gravity226/NASDAQ/tree/master/market_pulse)
+### Table Of Contents
+ - [Gathering Tweets]()
 
-[http://www.straycoder.com](http://www.straycoder.com)
 
-This web app allows users to search for different stocks and get predictions from those symbols.
+### Gathering Tweets
+Tweets were gathered using the [Tweepy](http://www.tweepy.org/) Python library.  Tweets were streamed in real time and saved to a MongoDB database.  Anywhere from 4-6 million tweets were gathered per day.
 
-### Modeling
-[Modeling and data cleaning/gathering](https://github.com/gravity226/NASDAQ/tree/master/testing)
-
-All of the data was pulled using the twitter API and saved to my AWS EC2 instance.  The modeling that was done includes word to vect, nonnegative matrix factorization, and random forest classification and regression.
+See [save_stock_tweets.py]() for the code.
