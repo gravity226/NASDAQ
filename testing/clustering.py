@@ -114,8 +114,8 @@ def graph_it(df):
     for tl in ax5.get_yticklabels():
         tl.set_color('c')
 
-    plt.show()
     # plt.savefig('imgs/eda_nmf_quotes.png')
+    plt.show()
 
 
 
