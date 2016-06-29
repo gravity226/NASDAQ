@@ -51,5 +51,5 @@ To start I used a [Random Forest Classifier](http://scikit-learn.org/stable/modu
 
 This image shows the closing prices for a weeks worth of data for the TSLA (Tesla) stock symbol.  The red box to the right of the graph shows where my model is predicting the market will fall for that day.  (You will probably notice that two points are missing here.. This is because those dates were on Saturday and Sunday and there will be no closing prices for those days.)
 
-<b>NMF and Regrssion</b><br />
+<b>NMF and Regression</b><br />
 When working with Nonnegative Matrix Factorization or NMF you need a way to figure what the best number of features to use is. For this I gauged how a certain number of features changed the MSE in the Regression model.  That code can be found in [model_validation.py](https://github.com/gravity226/NASDAQ/blob/master/testing/model_validation.py).  This code is basically my version of [Grid Searching](https://en.wikipedia.org/wiki/Hyperparameter_optimization) a different number of NMF features and different Random Forest metrics.
