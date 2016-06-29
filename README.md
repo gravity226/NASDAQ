@@ -23,5 +23,5 @@ See [save_stock_tweets.py](https://github.com/gravity226/NASDAQ/blob/master/stre
 ### Exploratory Data Analysis
 An easy way to get an idea of what your data is doing is to visualize it.  For this project I used [TFIDF](http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html) and [Nonnegative Matrix Factorization](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html) to get an easily interpretable result to graph and model.
 
-<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/edf_nmf_quotes.png" width="500" />
+<img src="https://github.com/gravity226/NASDAQ/blob/master/imgs/eda_nmf_quotes.png" width="500" />
 <br />
